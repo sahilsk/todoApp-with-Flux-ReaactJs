@@ -21,10 +21,10 @@ module.exports = React.createClass({
 
 			var liListNodes=  this.props.tasks.map( function(task){
 				var classToApply = "";
-				if( !task['pending']  )
-					classToApply ="taskItem finished";
+				if( task['pending']  )
+					classToApply ="taskItem";
 				else
-					classToApply = "taskItem";
+					classToApply = "taskItem finished";
 
 				return <Task className={classToApply} task={task}   />
 

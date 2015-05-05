@@ -9,8 +9,8 @@ var
 *	
 * @example
 	{ description: "my task to do" , pending: true/false}
-
 */
+
 
 module.exports = React.createClass({
 	getInitialState: function(){

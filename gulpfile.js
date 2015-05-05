@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 
-var  livereload = require('gulp-livereload');
+var server = require('gulp-express');
+
 var rename = require('gulp-rename');
 var watch = require("gulp-watch");
 
@@ -20,8 +21,6 @@ gulp.task('watch', function() {
 	  
 });
 
-
-
 gulp.task("browserify", function(){
 	gulp.src('react/reactClient.js')
 	    .pipe(browserify({
@@ -32,17 +31,26 @@ gulp.task("browserify", function(){
 	});
 
 gulp.task('default', function() {
-  // place code for your default task here
+   server.run(['bin/www']);
 });
 
 
+gulp.task('server', function () {
+    // Start the server at the beginning of the task 
+    server.run(['bin/www']);
+ 
+    // Restart the server when file changes 
+    gulp.watch(['react/**/*.js'], 
+    	function(){
+    		gulp.src('react/reactClient.js')
+			    .pipe(browserify({
+			      transform: ['reactify']
+			    }))
+			    .pipe(rename('bundle.js'))
+			    .pipe(gulp.dest('public/javascripts'))
+			    .pipe( server.notify() );
 
+    	});
 
-gulp.task('js', ['clean'], function() {
-  // Browserify/bundle the JS.
-  browserify(paths.app_js)
-    .transform(reactify)
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./src/'));
 });
+
